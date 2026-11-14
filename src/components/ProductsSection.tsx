@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   ArrowLeft,
   ArrowRight,
@@ -145,10 +146,16 @@ export default function ProductsSection({ onSelectProduct }: ProductsSectionProp
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   return (
-    <section id="products" className="w-full py-12 sm:py-16 lg:py-20 bg-[#f8faf9] border-b border-slate-200/60">
+    <section id="products" className="w-full py-12 sm:py-16 lg:py-20 bg-[#f8faf9] border-b border-slate-200/60 overflow-hidden">
       <div className="w-full px-4 sm:px-8 lg:px-12 xl:px-16">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 sm:mb-12">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 sm:mb-12"
+        >
           <div>
             <span className="text-[10px] sm:text-xs font-bold tracking-widest uppercase text-emerald-700 block mb-2">
               OUR PRODUCTS
@@ -193,16 +200,21 @@ export default function ProductsSection({ onSelectProduct }: ProductsSectionProp
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* 5 Product Cards Grid (Spans full width edge-to-edge evenly across 5 columns in Full HD quality!) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-5 w-full">
-          {productsData.map((product) => {
+          {productsData.map((product, idx) => {
             return (
-              <div
+              <motion.div
                 key={product.id}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-30px' }}
+                transition={{ duration: 0.5, delay: idx * 0.08, ease: 'easeOut' }}
+                whileHover={{ y: -6 }}
                 onClick={() => setSelectedProduct(product)}
-                className="group relative w-full bg-white rounded-2xl border border-slate-200/80 p-3.5 sm:p-4 shadow-sm hover:shadow-xl hover:border-emerald-300 transition-all duration-300 flex flex-col justify-between cursor-pointer hover:-translate-y-1"
+                className="group relative w-full bg-white rounded-2xl border border-slate-200/80 p-3.5 sm:p-4 shadow-sm hover:shadow-xl hover:border-emerald-300 transition-all duration-300 flex flex-col justify-between cursor-pointer"
               >
                 <div>
                   {/* Full HD 1200x896 Card Image */}
@@ -240,26 +252,36 @@ export default function ProductsSection({ onSelectProduct }: ProductsSectionProp
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                   </div>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>
 
         {/* Simple 3D Design & Drawing Contact Banner */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4 mt-8 sm:mt-10 p-4 sm:p-5 rounded-2xl bg-white border border-slate-200/90 shadow-xs">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="flex flex-col md:flex-row items-center justify-between gap-4 mt-8 sm:mt-10 p-4 sm:p-5 rounded-2xl bg-white border border-slate-200/90 shadow-xs"
+        >
           <div className="flex items-center gap-3 text-xs sm:text-sm text-slate-700 text-center md:text-left">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0 hidden sm:inline-block" />
             <span>Need 3D designs, window drawings, or ideas for your home?</span>
           </div>
           <div className="flex flex-col sm:flex-row items-center gap-2.5 w-full md:w-auto shrink-0">
-            <a
+            <motion.a
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
               href="tel:+918899919860"
               className="w-full sm:w-auto px-4 py-2.5 rounded-full border border-slate-200 hover:border-emerald-600 hover:bg-emerald-50 text-slate-800 text-xs font-semibold flex items-center justify-center gap-2 transition-all"
             >
               <Phone className="w-3.5 h-3.5 text-emerald-700" />
               <span>+91-8899919860</span>
-            </a>
-            <a
+            </motion.a>
+            <motion.a
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
               href="https://wa.me/918899919860?text=Hi%2C%20I%20need%203D%20designs%20and%20drawings%20for%20my%20windows%20and%20doors."
               target="_blank"
               rel="noopener noreferrer"
@@ -267,118 +289,136 @@ export default function ProductsSection({ onSelectProduct }: ProductsSectionProp
             >
               <MessageCircle className="w-3.5 h-3.5 text-emerald-400" />
               <span>WhatsApp for 3D &amp; Drawings</span>
-            </a>
+            </motion.a>
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Product Detail Modal */}
-      {selectedProduct && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl border border-slate-100 animate-in fade-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto">
-            <div className="relative h-60 sm:h-76 w-full bg-slate-900">
-              <Image
-                src={selectedProduct.image}
-                alt={selectedProduct.name}
-                fill
-                className="object-cover"
-                priority
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-black/20" />
-              <button
-                onClick={() => setSelectedProduct(null)}
-                className="absolute top-4 right-4 w-8 h-8 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-black/80 transition-colors"
-                aria-label="Close dialog"
-              >
-                <X className="w-4 h-4" />
-              </button>
-              <div className="absolute bottom-4 left-5 right-5">
-                <span className="text-[10px] sm:text-xs font-semibold tracking-wider text-emerald-300 uppercase">
-                  ARCHITECTURAL SYSTEMS CATALOG
-                </span>
-                <h3 className="text-xl sm:text-2xl font-bold text-white mt-0.5">
-                  {selectedProduct.name}
-                </h3>
-              </div>
-            </div>
-
-            <div className="p-5 sm:p-7 space-y-5">
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                {selectedProduct.description}
-              </p>
-
-              {/* Specifications */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-                {Object.entries(selectedProduct.specs).map(([key, value]) => (
-                  <div key={key} className="bg-slate-50 p-2.5 rounded-xl border border-slate-100">
-                    <div className="text-[9px] text-slate-500 font-medium uppercase tracking-wider">
-                      {key}
-                    </div>
-                    <div className="text-xs sm:text-sm font-bold text-slate-900 mt-0.5">
-                      {value}
-                    </div>
-                  </div>
-                ))}
+      <AnimatePresence>
+        {selectedProduct && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setSelectedProduct(null)}
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.94, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.94, y: 20 }}
+              transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+              className="relative z-10 bg-white rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl border border-slate-100 max-h-[90vh] overflow-y-auto"
+            >
+              <div className="relative h-60 sm:h-76 w-full bg-slate-900">
+                <Image
+                  src={selectedProduct.image}
+                  alt={selectedProduct.name}
+                  fill
+                  className="object-cover"
+                  priority
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-black/20" />
+                <button
+                  onClick={() => setSelectedProduct(null)}
+                  className="absolute top-4 right-4 w-8 h-8 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-black/80 transition-colors cursor-pointer"
+                  aria-label="Close dialog"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+                <div className="absolute bottom-4 left-5 right-5">
+                  <span className="text-[10px] sm:text-xs font-semibold tracking-wider text-emerald-300 uppercase">
+                    ARCHITECTURAL SYSTEMS CATALOG
+                  </span>
+                  <h3 className="text-xl sm:text-2xl font-bold text-white mt-0.5">
+                    {selectedProduct.name}
+                  </h3>
+                </div>
               </div>
 
-              {/* Engineering Highlights */}
-              <div>
-                <h4 className="text-[11px] font-bold text-slate-900 uppercase tracking-wider mb-2">
-                  Key Engineering Highlights
-                </h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-700">
-                  {selectedProduct.features.map((feat, i) => (
-                    <div key={i} className="flex items-center gap-2 bg-emerald-50/50 p-2 rounded-lg">
-                      <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                      <span>{feat}</span>
+              <div className="p-5 sm:p-7 space-y-5">
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                  {selectedProduct.description}
+                </p>
+
+                {/* Specifications */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                  {Object.entries(selectedProduct.specs).map(([key, value]) => (
+                    <div key={key} className="bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+                      <div className="text-[9px] text-slate-500 font-medium uppercase tracking-wider">
+                        {key}
+                      </div>
+                      <div className="text-xs sm:text-sm font-bold text-slate-900 mt-0.5">
+                        {value}
+                      </div>
                     </div>
                   ))}
                 </div>
-              </div>
 
-              {/* Warranty Assurance */}
-              <div className="flex items-center gap-2.5 bg-emerald-50/80 border border-emerald-200/70 p-3 rounded-xl text-xs text-emerald-950">
-                <Shield className="w-4 h-4 text-emerald-700 shrink-0" />
-                <span>
-                  Protected by our <strong>20-Year Product Warranty</strong> &amp; <strong>10-Year Hardware Warranty</strong>.
-                </span>
-              </div>
+                {/* Engineering Highlights */}
+                <div>
+                  <h4 className="text-[11px] font-bold text-slate-900 uppercase tracking-wider mb-2">
+                    Key Engineering Highlights
+                  </h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-700">
+                    {selectedProduct.features.map((feat, i) => (
+                      <div key={i} className="flex items-center gap-2 bg-emerald-50/50 p-2 rounded-lg">
+                        <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                        <span>{feat}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
 
-              {/* Modal Bottom Actions */}
-              <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-slate-100">
-                <Link
-                  href={`/products#${selectedProduct.id}`}
-                  onClick={() => setSelectedProduct(null)}
-                  className="text-xs font-semibold text-emerald-800 hover:text-emerald-950 flex items-center gap-1.5"
-                >
-                  <span>View Dedicated Product Page</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
-                </Link>
+                {/* Warranty Assurance */}
+                <div className="flex items-center gap-2.5 bg-emerald-50/80 border border-emerald-200/70 p-3 rounded-xl text-xs text-emerald-950">
+                  <Shield className="w-4 h-4 text-emerald-700 shrink-0" />
+                  <span>
+                    Protected by our <strong>20-Year Product Warranty</strong> &amp; <strong>10-Year Hardware Warranty</strong>.
+                  </span>
+                </div>
 
-                <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
-                  <button
+                {/* Modal Bottom Actions */}
+                <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-slate-100">
+                  <Link
+                    href={`/products#${selectedProduct.id}`}
                     onClick={() => setSelectedProduct(null)}
-                    className="px-4 py-2 rounded-full text-xs font-medium text-slate-600 hover:text-slate-900"
+                    className="text-xs font-semibold text-emerald-800 hover:text-emerald-950 flex items-center gap-1.5"
                   >
-                    Close
-                  </button>
-                  <button
-                    onClick={() => {
-                      const prod = selectedProduct;
-                      setSelectedProduct(null);
-                      onSelectProduct(prod);
-                    }}
-                    className="bg-[#062c21] hover:bg-[#0c4434] text-white text-xs font-semibold px-5 py-2.5 rounded-full flex items-center gap-2 shadow-md transition-all"
-                  >
-                    <span>Request Quote For This</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-emerald-400" />
-                  </button>
+                    <span>View Dedicated Product Page</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </Link>
+
+                  <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+                    <button
+                      onClick={() => setSelectedProduct(null)}
+                      className="px-4 py-2 rounded-full text-xs font-medium text-slate-600 hover:text-slate-900 cursor-pointer"
+                    >
+                      Close
+                    </button>
+                    <motion.button
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
+                      onClick={() => {
+                        const prod = selectedProduct;
+                        setSelectedProduct(null);
+                        onSelectProduct(prod);
+                      }}
+                      className="bg-[#062c21] hover:bg-[#0c4434] text-white text-xs font-semibold px-5 py-2.5 rounded-full flex items-center gap-2 shadow-md transition-all cursor-pointer"
+                    >
+                      <span>Request Quote For This</span>
+                      <ArrowRight className="w-3.5 h-3.5 text-emerald-400" />
+                    </motion.button>
+                  </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
-        </div>
-      )}
+        )}
+      </AnimatePresence>
     </section>
   );
 }

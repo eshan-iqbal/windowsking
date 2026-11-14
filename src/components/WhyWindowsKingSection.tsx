@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 import {
   ArrowRight,
   Sliders,
@@ -15,11 +16,17 @@ export default function WhyWindowsKingSection({
   onDiscoverBenefits,
 }: WhyWindowsKingSectionProps) {
   return (
-    <section id="why-us" className="w-full py-16 sm:py-24 bg-[#fafaf9] border-b border-slate-200/80">
+    <section id="why-us" className="w-full py-16 sm:py-24 bg-[#fafaf9] border-b border-slate-200/80 overflow-hidden">
       <div className="w-full px-4 sm:px-8 lg:px-12 xl:px-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           {/* Left Column: 3D Technical Profile Cutaway with 2 Clean Original Annotations */}
-          <div className="lg:col-span-6 bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-10 shadow-sm relative flex items-center justify-center">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="lg:col-span-6 bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-10 shadow-sm relative flex items-center justify-center"
+          >
             <div className="relative w-full aspect-square max-w-[420px] flex items-center justify-center">
               <Image
                 src="/images/profile-hires.jpg"
@@ -31,7 +38,13 @@ export default function WhyWindowsKingSection({
               />
 
               {/* Callout 1: Glazing */}
-              <div className="absolute top-6 left-2 sm:left-4 bg-white/95 backdrop-blur-md border border-slate-200 rounded-xl p-3 shadow-md max-w-[170px] sm:max-w-[200px]">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.85, y: -10 }}
+                whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3, duration: 0.4 }}
+                className="absolute top-6 left-2 sm:left-4 bg-white/95 backdrop-blur-md border border-slate-200 rounded-xl p-3 shadow-md max-w-[170px] sm:max-w-[200px]"
+              >
                 <div className="flex items-center gap-1.5 mb-0.5">
                   <span className="w-2 h-2 rounded-full bg-emerald-600 shrink-0" />
                   <div className="text-xs font-bold text-slate-900 leading-tight">
@@ -41,10 +54,16 @@ export default function WhyWindowsKingSection({
                 <div className="text-[10px] text-slate-500 leading-snug">
                   Better insulation & noise control
                 </div>
-              </div>
+              </motion.div>
 
               {/* Callout 2: uPVC Profile */}
-              <div className="absolute bottom-6 left-2 sm:left-4 bg-white/95 backdrop-blur-md border border-slate-200 rounded-xl p-3 shadow-md max-w-[170px] sm:max-w-[200px]">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.85, y: 10 }}
+                whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.4, duration: 0.4 }}
+                className="absolute bottom-6 left-2 sm:left-4 bg-white/95 backdrop-blur-md border border-slate-200 rounded-xl p-3 shadow-md max-w-[170px] sm:max-w-[200px]"
+              >
                 <div className="flex items-center gap-1.5 mb-0.5">
                   <span className="w-2 h-2 rounded-full bg-emerald-600 shrink-0" />
                   <div className="text-xs font-bold text-slate-900 leading-tight">
@@ -54,12 +73,18 @@ export default function WhyWindowsKingSection({
                 <div className="text-[10px] text-slate-500 leading-snug">
                   Strong, durable & low-maintenance
                 </div>
-              </div>
+              </motion.div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Right Column: Clean Editorial Paragraphs & Solutions Button */}
-          <div className="lg:col-span-6 space-y-6">
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="lg:col-span-6 space-y-6"
+          >
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100/70 text-emerald-900 text-xs font-bold tracking-widest uppercase mb-3">
                 <Sliders className="w-3.5 h-3.5 text-emerald-700" />
@@ -102,15 +127,17 @@ export default function WhyWindowsKingSection({
 
             {/* Action CTA Button */}
             <div className="pt-2">
-              <button
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
                 onClick={onDiscoverBenefits}
-                className="bg-[#062c21] hover:bg-[#0c4333] text-white text-xs sm:text-sm font-semibold px-7 py-3.5 rounded-full flex items-center gap-2 shadow-md transition-all hover:gap-3 active:scale-95"
+                className="bg-[#062c21] hover:bg-[#0c4333] text-white text-xs sm:text-sm font-semibold px-7 py-3.5 rounded-full flex items-center gap-2 shadow-md transition-all hover:gap-3 cursor-pointer"
               >
                 <span>Explore Full Engineering Solutions</span>
                 <ArrowRight className="w-4 h-4 text-emerald-400" />
-              </button>
+              </motion.button>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

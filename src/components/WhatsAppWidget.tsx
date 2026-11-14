@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { X, Send } from 'lucide-react';
 
 const WHATSAPP_NUMBER = '918899919860';
@@ -48,97 +49,118 @@ export default function WhatsAppWidget() {
   return (
     <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 flex flex-col items-end gap-3">
       {/* Animated Mini Chat-Bot Card */}
-      {isOpen && (
-        <div className="w-[300px] sm:w-[330px] rounded-3xl overflow-hidden bg-white shadow-2xl border border-slate-200/90 animate-in fade-in slide-in-from-bottom-4 duration-200">
-          {/* Header */}
-          <div className="bg-gradient-to-r from-[#062c21] to-[#0a4a36] px-4 py-3.5 text-white flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="relative w-10 h-10 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-md shrink-0">
-                <WhatsAppLogo className="w-5 h-5" />
-                <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-300 ring-2 ring-[#062c21]" />
-              </div>
-              <div>
-                <div className="text-xs font-bold leading-tight">Windows King</div>
-                <div className="text-[10px] text-emerald-200/90">
-                  Typically replies in minutes
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.88, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.88, y: 20 }}
+            transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+            className="w-[300px] sm:w-[330px] rounded-3xl overflow-hidden bg-white shadow-2xl border border-slate-200/90 origin-bottom-right"
+          >
+            {/* Header */}
+            <div className="bg-gradient-to-r from-[#062c21] to-[#0a4a36] px-4 py-3.5 text-white flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="relative w-10 h-10 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-md shrink-0">
+                  <WhatsAppLogo className="w-5 h-5" />
+                  <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-300 ring-2 ring-[#062c21]" />
+                </div>
+                <div>
+                  <div className="text-xs font-bold leading-tight">Windows King</div>
+                  <div className="text-[10px] text-emerald-200/90">
+                    Typically replies in minutes
+                  </div>
                 </div>
               </div>
-            </div>
-            <button
-              type="button"
-              onClick={() => setIsOpen(false)}
-              aria-label="Close WhatsApp chat"
-              className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 text-white/80 hover:text-white flex items-center justify-center transition-colors"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          </div>
-
-          {/* Chat Body */}
-          <div className="p-4 bg-[#efeae2] space-y-3">
-            {/* Bot Message Bubble */}
-            <div className="bg-white rounded-2xl rounded-tl-sm p-3.5 shadow-xs max-w-[90%] text-xs text-slate-800 leading-relaxed">
-              {typing ? (
-                <div className="flex items-center gap-1.5 py-1 px-1">
-                  <span className="w-2 h-2 rounded-full bg-slate-400 animate-bounce [animation-delay:0ms]" />
-                  <span className="w-2 h-2 rounded-full bg-slate-400 animate-bounce [animation-delay:150ms]" />
-                  <span className="w-2 h-2 rounded-full bg-slate-400 animate-bounce [animation-delay:300ms]" />
-                </div>
-              ) : (
-                <div className="animate-in fade-in duration-200">
-                  <p className="font-semibold text-slate-900 mb-1">
-                    Asslamualikum 👋
-                  </p>
-                  <p className="text-slate-600 text-[11px]">
-                    Need 3D designs, window drawings, or a free quote for your home? Tap below to
-                    chat with us on WhatsApp.
-                  </p>
-                </div>
-              )}
+              <button
+                type="button"
+                onClick={() => setIsOpen(false)}
+                aria-label="Close WhatsApp chat"
+                className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 text-white/80 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
             </div>
 
-            {/* Quick Reply Chips */}
-            {!typing && (
-              <div className="flex flex-wrap gap-1.5 animate-in fade-in slide-in-from-bottom-2 duration-200">
-                {quickPrompts.map((item) => (
-                  <a
-                    key={item.label}
-                    href={buildWhatsAppUrl(item.message)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-3 py-1.5 rounded-full bg-white hover:bg-emerald-50 border border-emerald-600/30 text-emerald-900 text-[11px] font-semibold shadow-2xs transition-colors"
+            {/* Chat Body */}
+            <div className="p-4 bg-[#efeae2] space-y-3">
+              {/* Bot Message Bubble */}
+              <div className="bg-white rounded-2xl rounded-tl-sm p-3.5 shadow-xs max-w-[90%] text-xs text-slate-800 leading-relaxed">
+                {typing ? (
+                  <div className="flex items-center gap-1.5 py-1 px-1">
+                    <span className="w-2 h-2 rounded-full bg-slate-400 animate-bounce [animation-delay:0ms]" />
+                    <span className="w-2 h-2 rounded-full bg-slate-400 animate-bounce [animation-delay:150ms]" />
+                    <span className="w-2 h-2 rounded-full bg-slate-400 animate-bounce [animation-delay:300ms]" />
+                  </div>
+                ) : (
+                  <motion.div
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.2 }}
                   >
-                    {item.label}
-                  </a>
-                ))}
+                    <p className="font-semibold text-slate-900 mb-1">
+                      Asslamualikum 👋
+                    </p>
+                    <p className="text-slate-600 text-[11px]">
+                      Need 3D designs, window drawings, or a free quote for your home? Tap below to
+                      chat with us on WhatsApp.
+                    </p>
+                  </motion.div>
+                )}
               </div>
-            )}
-          </div>
 
-          {/* Footer Redirect CTA */}
-          <div className="p-3 bg-white border-t border-slate-100">
-            <a
-              href={buildWhatsAppUrl(
-                'Hi, I would like to talk about Windows King uPVC doors and windows.'
+              {/* Quick Reply Chips */}
+              {!typing && (
+                <div className="flex flex-wrap gap-1.5">
+                  {quickPrompts.map((item, idx) => (
+                    <motion.a
+                      key={item.label}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: idx * 0.06, duration: 0.2 }}
+                      whileHover={{ scale: 1.04 }}
+                      whileTap={{ scale: 0.96 }}
+                      href={buildWhatsAppUrl(item.message)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-3 py-1.5 rounded-full bg-white hover:bg-emerald-50 border border-emerald-600/30 text-emerald-900 text-[11px] font-semibold shadow-2xs transition-colors"
+                    >
+                      {item.label}
+                    </motion.a>
+                  ))}
+                </div>
               )}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full py-2.5 px-4 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.98]"
-            >
-              <WhatsAppLogo className="w-4 h-4" />
-              <span>Start Chat on WhatsApp</span>
-              <Send className="w-3 h-3 ml-0.5" />
-            </a>
-          </div>
-        </div>
-      )}
+            </div>
+
+            {/* Footer Redirect CTA */}
+            <div className="p-3 bg-white border-t border-slate-100">
+              <motion.a
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                href={buildWhatsAppUrl(
+                  'Hi, I would like to talk about Windows King uPVC doors and windows.'
+                )}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-2.5 px-4 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition-all"
+              >
+                <WhatsAppLogo className="w-4 h-4" />
+                <span>Start Chat on WhatsApp</span>
+                <Send className="w-3 h-3 ml-0.5" />
+              </motion.a>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Floating Animated WhatsApp Icon Trigger */}
-      <button
+      <motion.button
         type="button"
+        whileHover={{ scale: 1.08 }}
+        whileTap={{ scale: 0.92 }}
         onClick={() => setIsOpen((prev) => !prev)}
         aria-label="Talk on WhatsApp"
-        className={`group relative flex items-center justify-center w-14 h-14 rounded-full bg-[#25D366] hover:bg-[#20bd5a] text-white shadow-[0_10px_28px_rgba(37,211,102,0.45)] transition-all duration-200 active:scale-95 ${
+        className={`group relative flex items-center justify-center w-14 h-14 rounded-full bg-[#25D366] hover:bg-[#20bd5a] text-white shadow-[0_10px_28px_rgba(37,211,102,0.45)] transition-colors duration-200 cursor-pointer ${
           isOpen ? '' : 'wa-float'
         }`}
       >
@@ -155,7 +177,7 @@ export default function WhatsAppWidget() {
             </>
           )}
         </span>
-      </button>
+      </motion.button>
     </div>
   );
 }

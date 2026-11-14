@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import { motion, type Variants } from 'framer-motion';
 import {
   ArrowRight,
   Zap,
@@ -19,6 +20,35 @@ interface HeroSectionProps {
   onOpenQuote: () => void;
   onOpenTour?: () => void;
 }
+
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.55, ease: 'easeOut' },
+  },
+};
+
+const pillVariants: Variants = {
+  hidden: { opacity: 0, scale: 0.9 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.4, ease: 'easeOut' },
+  },
+};
 
 export default function HeroSection({ onOpenQuote }: HeroSectionProps) {
   return (
@@ -42,77 +72,131 @@ export default function HeroSection({ onOpenQuote }: HeroSectionProps) {
         {/* Content Container (Full Width Edge-to-Edge) */}
         <div className="relative z-10 w-full px-4 sm:px-8 lg:px-12 xl:px-16 pt-12 sm:pt-16 pb-24 sm:pb-32 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
           {/* Left Column: Heading, Subtitle & CTAs */}
-          <div className="max-w-2xl">
+          <motion.div
+            className="max-w-2xl"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
             {/* Category Pill */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 backdrop-blur-md border border-emerald-400/40 text-[10px] sm:text-xs font-semibold tracking-widest uppercase text-emerald-300 mb-4 sm:mb-5">
+            <motion.div
+              variants={itemVariants}
+              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 backdrop-blur-md border border-emerald-400/40 text-[10px] sm:text-xs font-semibold tracking-widest uppercase text-emerald-300 mb-4 sm:mb-5"
+            >
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
               <span>PREMIUM uPVC SOLUTIONS</span>
-            </div>
+            </motion.div>
 
             {/* Headline */}
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-[1.12] mb-3 sm:mb-5">
+            <motion.h1
+              variants={itemVariants}
+              className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-[1.12] mb-3 sm:mb-5"
+            >
               Windows That <br />
               <span className="font-serif italic font-normal text-emerald-300">
                 Define Your Space.
               </span>
-            </h1>
+            </motion.h1>
 
             {/* Description */}
-            <p className="text-xs sm:text-sm lg:text-base text-slate-200/90 max-w-lg font-light leading-relaxed mb-6 sm:mb-8">
+            <motion.p
+              variants={itemVariants}
+              className="text-xs sm:text-sm lg:text-base text-slate-200/90 max-w-lg font-light leading-relaxed mb-6 sm:mb-8"
+            >
               High-performance uPVC doors and windows manufactured for comfort,
               durability and modern architectural living.
-            </p>
+            </motion.p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
-              <button
+            <motion.div
+              variants={itemVariants}
+              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 mb-6 sm:mb-8"
+            >
+              <motion.button
                 onClick={onOpenQuote}
-                className="bg-[#0b4838] hover:bg-[#10624d] text-white text-xs sm:text-sm font-semibold px-6 py-3.5 rounded-full flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/50 hover:gap-3 transition-all active:scale-95"
+                whileHover={{ scale: 1.03, y: -2 }}
+                whileTap={{ scale: 0.97 }}
+                className="bg-[#0b4838] hover:bg-[#10624d] text-white text-xs sm:text-sm font-semibold px-6 py-3.5 rounded-full flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/50 hover:gap-3 transition-all cursor-pointer"
               >
                 <span>Request a Free Quote</span>
                 <ArrowRight className="w-4 h-4 text-emerald-300" />
-              </button>
+              </motion.button>
 
-              <a
+              <motion.a
                 href="#products"
-                className="bg-white hover:bg-slate-100 text-slate-900 text-xs sm:text-sm font-semibold px-6 py-3.5 rounded-full text-center shadow-md hover:shadow-lg transition-all active:scale-95"
+                whileHover={{ scale: 1.03, y: -2 }}
+                whileTap={{ scale: 0.97 }}
+                className="bg-white hover:bg-slate-100 text-slate-900 text-xs sm:text-sm font-semibold px-6 py-3.5 rounded-full text-center shadow-md hover:shadow-lg transition-all"
               >
                 Explore Products
-              </a>
-            </div>
+              </motion.a>
+            </motion.div>
 
             {/* Feature Pills */}
-            <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 text-[10px] sm:text-xs text-slate-200">
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/45 backdrop-blur-md border border-white/10">
+            <motion.div
+              variants={itemVariants}
+              className="flex flex-wrap items-center gap-2 sm:gap-2.5 text-[10px] sm:text-xs text-slate-200"
+            >
+              <motion.div
+                variants={pillVariants}
+                whileHover={{ scale: 1.05 }}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/45 backdrop-blur-md border border-white/10"
+              >
                 <Zap className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-emerald-400 shrink-0" />
                 <span>Energy Efficient</span>
-              </div>
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/45 backdrop-blur-md border border-white/10">
+              </motion.div>
+              <motion.div
+                variants={pillVariants}
+                whileHover={{ scale: 1.05 }}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/45 backdrop-blur-md border border-white/10"
+              >
                 <Volume2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-emerald-400 shrink-0" />
                 <span>Sound Insulation</span>
-              </div>
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/45 backdrop-blur-md border border-white/10">
+              </motion.div>
+              <motion.div
+                variants={pillVariants}
+                whileHover={{ scale: 1.05 }}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/45 backdrop-blur-md border border-white/10"
+              >
                 <CloudSnow className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-emerald-400 shrink-0" />
                 <span>Weather Resistant</span>
-              </div>
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/45 backdrop-blur-md border border-white/10">
+              </motion.div>
+              <motion.div
+                variants={pillVariants}
+                whileHover={{ scale: 1.05 }}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/45 backdrop-blur-md border border-white/10"
+              >
                 <CheckCircle2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-emerald-400 shrink-0" />
                 <span>Low Maintenance</span>
-              </div>
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/45 backdrop-blur-md border border-white/10">
+              </motion.div>
+              <motion.div
+                variants={pillVariants}
+                whileHover={{ scale: 1.05 }}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/45 backdrop-blur-md border border-white/10"
+              >
                 <InfinityIcon className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-emerald-400 shrink-0" />
                 <span>Long Lasting</span>
-              </div>
-            </div>
-          </div>
+              </motion.div>
+            </motion.div>
+          </motion.div>
         </div>
       </div>
 
       {/* Floating 4-Metric Statistics Banner (Pulls up seamlessly into the hero bottom, never clipped!) */}
-      <div className="relative z-30 w-full px-4 sm:px-8 lg:px-12 xl:px-16 -mt-12 sm:-mt-16 pb-6">
+      <motion.div
+        initial={{ opacity: 0, y: 35 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-20px' }}
+        transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+        className="relative z-30 w-full px-4 sm:px-8 lg:px-12 xl:px-16 -mt-12 sm:-mt-16 pb-6"
+      >
         <div className="w-full bg-white rounded-2xl md:rounded-3xl shadow-xl shadow-slate-900/15 border border-slate-100 p-4 sm:p-7 grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:divide-x divide-slate-100">
           {/* Stat 1 */}
-          <div className="flex items-center gap-2.5 sm:gap-3.5 lg:px-4">
+          <motion.div
+            whileHover={{ y: -3 }}
+            transition={{ duration: 0.2 }}
+            className="flex items-center gap-2.5 sm:gap-3.5 lg:px-4"
+          >
             <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0">
               <TrendingUp className="w-4 h-4 sm:w-6 sm:h-6" />
             </div>
@@ -124,10 +208,14 @@ export default function HeroSection({ onOpenQuote }: HeroSectionProps) {
                 Years of Experience
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Stat 2 */}
-          <div className="flex items-center gap-2.5 sm:gap-3.5 lg:px-4">
+          <motion.div
+            whileHover={{ y: -3 }}
+            transition={{ duration: 0.2 }}
+            className="flex items-center gap-2.5 sm:gap-3.5 lg:px-4"
+          >
             <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0">
               <Building2 className="w-4 h-4 sm:w-6 sm:h-6" />
             </div>
@@ -139,10 +227,14 @@ export default function HeroSection({ onOpenQuote }: HeroSectionProps) {
                 Projects Completed
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Stat 3 */}
-          <div className="flex items-center gap-2.5 sm:gap-3.5 lg:px-4">
+          <motion.div
+            whileHover={{ y: -3 }}
+            transition={{ duration: 0.2 }}
+            className="flex items-center gap-2.5 sm:gap-3.5 lg:px-4"
+          >
             <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0">
               <Factory className="w-4 h-4 sm:w-6 sm:h-6" />
             </div>
@@ -154,10 +246,14 @@ export default function HeroSection({ onOpenQuote }: HeroSectionProps) {
                 Manufacturing Facility
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Stat 4 */}
-          <div className="flex items-center gap-2.5 sm:gap-3.5 lg:px-4">
+          <motion.div
+            whileHover={{ y: -3 }}
+            transition={{ duration: 0.2 }}
+            className="flex items-center gap-2.5 sm:gap-3.5 lg:px-4"
+          >
             <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0">
               <ShieldCheck className="w-4 h-4 sm:w-6 sm:h-6" />
             </div>
@@ -172,9 +268,9 @@ export default function HeroSection({ onOpenQuote }: HeroSectionProps) {
                 </span>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

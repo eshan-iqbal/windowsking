@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import {
   Factory,
   ShieldCheck,
@@ -46,10 +47,16 @@ export default function ProcessSection(_props: ProcessSectionProps) {
   }, [activeIndex]);
 
   return (
-    <section id="manufacturing" className="w-full py-14 sm:py-20 bg-white border-b border-slate-200/80">
+    <section id="manufacturing" className="w-full py-14 sm:py-20 bg-white border-b border-slate-200/80 overflow-hidden">
       <div className="w-full px-4 sm:px-8 lg:px-12 xl:px-16">
         {/* Section Header */}
-        <div className="mb-8 sm:mb-12 max-w-2xl">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="mb-8 sm:mb-12 max-w-2xl"
+        >
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100/70 text-emerald-900 text-xs font-bold tracking-widest uppercase mb-3">
             <Factory className="w-3.5 h-3.5 text-emerald-700" />
             <span>PRECISION FABRICATION PIPELINE</span>
@@ -60,10 +67,16 @@ export default function ProcessSection(_props: ProcessSectionProps) {
               Perfect Installation.
             </span>
           </h2>
-        </div>
+        </motion.div>
 
         {/* Auto-Animated Pipeline */}
-        <div className="flow-grid-bg rounded-3xl border border-slate-200/90 bg-[#f8faf9] p-4 sm:p-6 lg:p-8 shadow-xs">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.65, delay: 0.15 }}
+          className="flow-grid-bg rounded-3xl border border-slate-200/90 bg-[#f8faf9] p-4 sm:p-6 lg:p-8 shadow-xs"
+        >
           <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-0 sm:gap-3.5 lg:gap-4 relative">
             {processSteps.map((step, i) => {
               const Icon = stepIcons[i];
@@ -90,12 +103,14 @@ export default function ProcessSection(_props: ProcessSectionProps) {
                   )}
 
                   {/* Stage Card */}
-                  <button
+                  <motion.button
                     type="button"
+                    whileHover={{ y: -3 }}
+                    whileTap={{ scale: 0.98 }}
                     onClick={() => setActiveIndex(i)}
                     aria-pressed={isActive}
                     aria-label={`Stage ${step.step}: ${step.title}`}
-                    className={`group relative z-10 w-full flex sm:flex-col items-center sm:justify-center gap-3.5 sm:gap-0 text-left sm:text-center rounded-2xl px-4 py-3.5 sm:p-4 lg:p-4 border transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 ${
+                    className={`group relative z-10 w-full flex sm:flex-col items-center sm:justify-center gap-3.5 sm:gap-0 text-left sm:text-center rounded-2xl px-4 py-3.5 sm:p-4 lg:p-4 border transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 cursor-pointer ${
                       isActive
                         ? 'bg-white border-emerald-500 shadow-md ring-1 ring-emerald-500/20 sm:-translate-y-1'
                         : 'bg-white/75 border-slate-200/80 hover:bg-white hover:border-emerald-300'
@@ -131,7 +146,7 @@ export default function ProcessSection(_props: ProcessSectionProps) {
                     >
                       {step.title}
                     </span>
-                  </button>
+                  </motion.button>
 
                   {/* Mobile vertical connector (< sm) */}
                   {hasNext && (
@@ -153,7 +168,7 @@ export default function ProcessSection(_props: ProcessSectionProps) {
               );
             })}
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

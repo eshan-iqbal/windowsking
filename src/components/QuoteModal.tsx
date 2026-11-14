@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   X,
   Check,
@@ -31,8 +32,6 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
-
-  if (!isOpen) return null;
 
   const resetAndClose = () => {
     setSubmitted(false);
@@ -75,18 +74,29 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
 
   return (
     <>
-      <div
-        className="fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto"
-        onClick={resetAndClose}
-      >
-        <div
-          className="bg-white rounded-3xl max-w-md w-full overflow-hidden shadow-2xl border border-slate-200/80 my-6 animate-in fade-in zoom-in-95 duration-200 relative"
-          onClick={(e) => e.stopPropagation()}
-        >
-          {submitted ? (
-            <div className="p-8 text-center space-y-5 relative">
-              <button
-                onClick={resetAndClose}
+      <AnimatePresence>
+        {isOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 bg-slate-950/75 backdrop-blur-sm"
+              onClick={resetAndClose}
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.94, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.94, y: 20 }}
+              transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+              className="relative z-10 bg-white rounded-3xl max-w-md w-full overflow-hidden shadow-2xl border border-slate-200/80 my-6"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {submitted ? (
+                <div className="p-8 text-center space-y-5 relative">
+                  <button
+                    onClick={resetAndClose}
                 className="absolute top-5 right-5 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors"
                 aria-label="Close quote modal"
               >
@@ -312,8 +322,10 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
               </form>
             </>
           )}
-        </div>
-      </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       {/* Small Map Picker Popup */}
       <MapPickerModal

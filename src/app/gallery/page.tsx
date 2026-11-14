@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
 import TopBar from '@/components/TopBar';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -365,8 +366,13 @@ export default function GalleryPage() {
       <Navbar onOpenQuote={() => setQuoteModalOpen(true)} />
 
       {/* 1. Cinematic Gallery Header */}
-      <section className="relative w-full pt-10 pb-8 sm:pt-16 sm:pb-12 border-b border-emerald-950/80 bg-gradient-to-b from-[#06241a] to-[#041a13]">
-        <div className="w-full px-4 sm:px-8 lg:px-12 xl:px-16 flex flex-col items-center text-center max-w-3xl mx-auto">
+      <section className="relative w-full pt-10 pb-8 sm:pt-16 sm:pb-12 border-b border-emerald-950/80 bg-gradient-to-b from-[#06241a] to-[#041a13] overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="w-full px-4 sm:px-8 lg:px-12 xl:px-16 flex flex-col items-center text-center max-w-3xl mx-auto"
+        >
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-[11px] font-semibold tracking-widest uppercase mb-4">
             <Camera className="w-3.5 h-3.5 text-emerald-400" />
             <span>Factory &amp; Site Gallery</span>
@@ -390,26 +396,28 @@ export default function GalleryPage() {
               {categories.map((cat) => {
                 const isActive = activeCategory === cat.id;
                 return (
-                  <button
+                  <motion.button
                     key={cat.id}
                     type="button"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                     onClick={() => {
                       setActiveCategory(cat.id);
                       setActiveIndex(null);
                     }}
-                    className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold transition-all ${
+                    className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold transition-colors cursor-pointer ${
                       isActive
                         ? 'bg-emerald-400 text-slate-950 shadow-lg'
                         : 'bg-white/10 text-slate-300 hover:bg-white/20 hover:text-white'
                     }`}
                   >
                     {cat.label}
-                  </button>
+                  </motion.button>
                 );
               })}
             </div>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* 2. Responsive Gallery Grid (Vertical 9:16 Video Reels & 3:4 Portrait Photos) */}
@@ -417,11 +425,16 @@ export default function GalleryPage() {
         <div className="w-full px-3 sm:px-8 lg:px-12 xl:px-16">
           <div className="grid grid-cols-2 lg:grid-cols-12 gap-3 sm:gap-5">
             {filteredItems.map((item, idx) => (
-              <button
+              <motion.button
                 key={item.id}
                 type="button"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-20px' }}
+                transition={{ duration: 0.45, delay: (idx % 6) * 0.06 }}
+                whileHover={{ y: -4 }}
                 onClick={() => setActiveIndex(idx)}
-                className={`group relative rounded-2xl sm:rounded-3xl overflow-hidden bg-slate-950 border border-emerald-900/60 hover:border-emerald-400/80 transition-all duration-300 cursor-pointer shadow-lg hover:shadow-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 ${
+                className={`group relative rounded-2xl sm:rounded-3xl overflow-hidden bg-slate-950 border border-emerald-900/60 hover:border-emerald-400/80 transition-colors duration-300 cursor-pointer shadow-lg hover:shadow-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 ${
                   activeCategory === 'all'
                     ? item.gridClass
                     : activeCategory === 'videos'
@@ -495,155 +508,176 @@ export default function GalleryPage() {
                     </div>
                   </div>
                 )}
-              </button>
+              </motion.button>
             ))}
           </div>
         </div>
       </section>
 
       {/* 3. Fullscreen Lightbox Modal (Adaptive Full-Height View) */}
-      {activeItem && activeIndex !== null && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-6 bg-black/95 backdrop-blur-md animate-in fade-in duration-200"
-          onClick={() => setActiveIndex(null)}
-        >
-          <div
-            className="relative w-full max-w-3xl max-h-[94vh] bg-slate-950 border border-emerald-900/80 rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl flex flex-col text-white animate-in zoom-in-95 duration-200"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Top Bar (No Site Name, Clean Counter Pill & Close Button) */}
-            <div className="px-4 sm:px-6 py-3.5 border-b border-slate-800/90 flex items-center justify-between gap-2 shrink-0">
-              <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[11px] font-bold border border-emerald-500/30 shrink-0">
-                {String(activeIndex + 1).padStart(2, '0')} /{' '}
-                {String(filteredItems.length).padStart(2, '0')}
-              </span>
-              <button
-                type="button"
-                onClick={() => setActiveIndex(null)}
-                className="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center justify-center transition-colors shrink-0"
-                aria-label="Close modal"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-
-            {/* Scrollable Body */}
-            <div className="overflow-y-auto p-4 sm:p-6 space-y-4">
-              {/* Media Container: Full Adaptive Height for 9:16 Vertical Content */}
-              <div className="relative w-full h-[52vh] sm:h-[65vh] rounded-xl sm:rounded-2xl overflow-hidden bg-black flex items-center justify-center">
-                {activeItem.type === 'video' ? (
-                  <video
-                    key={activeItem.src}
-                    src={activeItem.src}
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    preload="auto"
-                    disablePictureInPicture
-                    disableRemotePlayback
-                    className="max-h-full max-w-full object-contain pointer-events-none select-none"
-                  />
-                ) : (
-                  <Image
-                    src={activeItem.src}
-                    alt={activeItem.title}
-                    fill
-                    className="object-contain"
-                    priority
-                  />
-                )}
-
-                {/* Prev / Next Buttons */}
-                {filteredItems.length > 1 && (
-                  <>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setActiveIndex(
-                          activeIndex === 0 ? filteredItems.length - 1 : activeIndex - 1
-                        )
-                      }
-                      aria-label="Previous item"
-                      className="absolute left-2.5 sm:left-4 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/70 hover:bg-black/90 border border-white/20 text-white flex items-center justify-center transition-colors z-20 shadow-xl"
-                    >
-                      <ChevronLeft className="w-5 h-5" />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setActiveIndex((activeIndex + 1) % filteredItems.length)
-                      }
-                      aria-label="Next item"
-                      className="absolute right-2.5 sm:right-4 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/70 hover:bg-black/90 border border-white/20 text-white flex items-center justify-center transition-colors z-20 shadow-xl"
-                    >
-                      <ChevronRight className="w-5 h-5" />
-                    </button>
-                  </>
-                )}
-              </div>
-
-              {/* Item Details */}
-              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
-                <div>
-                  <h2 className="text-lg sm:text-2xl font-extrabold text-white tracking-tight">
-                    {activeItem.title}
-                  </h2>
-                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed mt-1.5">
-                    {activeItem.description}
-                  </p>
-                </div>
-                <span className="self-start shrink-0 px-3 py-1 rounded-full bg-white/10 border border-white/10 text-emerald-300 text-[11px] font-semibold">
-                  {activeItem.finish}
+      <AnimatePresence>
+        {activeItem && activeIndex !== null && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-6">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setActiveIndex(null)}
+              className="fixed inset-0 bg-black/95 backdrop-blur-md"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.94, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.94, y: 20 }}
+              transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+              className="relative z-10 w-full max-w-3xl max-h-[94vh] bg-slate-950 border border-emerald-900/80 rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl flex flex-col text-white"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Top Bar (No Site Name, Clean Counter Pill & Close Button) */}
+              <div className="px-4 sm:px-6 py-3.5 border-b border-slate-800/90 flex items-center justify-between gap-2 shrink-0">
+                <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[11px] font-bold border border-emerald-500/30 shrink-0">
+                  {String(activeIndex + 1).padStart(2, '0')} /{' '}
+                  {String(filteredItems.length).padStart(2, '0')}
                 </span>
+                <button
+                  type="button"
+                  onClick={() => setActiveIndex(null)}
+                  className="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center justify-center transition-colors shrink-0 cursor-pointer"
+                  aria-label="Close modal"
+                >
+                  <X className="w-4 h-4" />
+                </button>
               </div>
 
-              {/* In-House Fabrication & Warranty Assurance */}
-              <div className="bg-emerald-950/50 border border-emerald-800/50 p-3.5 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-                <div className="flex items-center gap-2.5">
-                  <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
-                  <span className="text-xs text-slate-300">
-                    Custom-built at our plant on Old National Highway, Uranhall, Anantnag.
+              {/* Scrollable Body */}
+              <div className="overflow-y-auto p-4 sm:p-6 space-y-4">
+                {/* Media Container: Full Adaptive Height for 9:16 Vertical Content */}
+                <div className="relative w-full h-[52vh] sm:h-[65vh] rounded-xl sm:rounded-2xl overflow-hidden bg-black flex items-center justify-center">
+                  {activeItem.type === 'video' ? (
+                    <video
+                      key={activeItem.src}
+                      src={activeItem.src}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      preload="auto"
+                      disablePictureInPicture
+                      disableRemotePlayback
+                      className="max-h-full max-w-full object-contain pointer-events-none select-none"
+                    />
+                  ) : (
+                    <Image
+                      src={activeItem.src}
+                      alt={activeItem.title}
+                      fill
+                      className="object-contain"
+                      priority
+                    />
+                  )}
+
+                  {/* Prev / Next Buttons */}
+                  {filteredItems.length > 1 && (
+                    <>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setActiveIndex(
+                            activeIndex === 0 ? filteredItems.length - 1 : activeIndex - 1
+                          )
+                        }
+                        aria-label="Previous item"
+                        className="absolute left-2.5 sm:left-4 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/70 hover:bg-black/90 border border-white/20 text-white flex items-center justify-center transition-colors z-20 shadow-xl cursor-pointer"
+                      >
+                        <ChevronLeft className="w-5 h-5" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setActiveIndex((activeIndex + 1) % filteredItems.length)
+                        }
+                        aria-label="Next item"
+                        className="absolute right-2.5 sm:right-4 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/70 hover:bg-black/90 border border-white/20 text-white flex items-center justify-center transition-colors z-20 shadow-xl cursor-pointer"
+                      >
+                        <ChevronRight className="w-5 h-5" />
+                      </button>
+                    </>
+                  )}
+                </div>
+
+                {/* Item Details */}
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+                  <div>
+                    <h2 className="text-lg sm:text-2xl font-extrabold text-white tracking-tight">
+                      {activeItem.title}
+                    </h2>
+                    <p className="text-xs sm:text-sm text-slate-300 leading-relaxed mt-1.5">
+                      {activeItem.description}
+                    </p>
+                  </div>
+                  <span className="self-start shrink-0 px-3 py-1 rounded-full bg-white/10 border border-white/10 text-emerald-300 text-[11px] font-semibold">
+                    {activeItem.finish}
                   </span>
                 </div>
-                <span className="text-[11px] font-semibold text-emerald-400 bg-emerald-900/40 px-2.5 py-0.5 rounded-full border border-emerald-700/50 self-start sm:self-auto">
-                  20-Yr Product • 10-Yr Hardware Warranty
-                </span>
-              </div>
-            </div>
 
-            {/* Footer CTAs */}
-            <div className="p-4 sm:px-6 border-t border-slate-800 bg-slate-950 flex flex-col sm:flex-row items-center justify-between gap-2.5 shrink-0">
-              <a
-                href={`https://wa.me/918899919860?text=${encodeURIComponent(
-                  `Hi Windows King, I liked "${activeItem.title}" from your gallery and would like pricing and custom design details.`
-                )}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full sm:w-auto px-5 py-2.5 rounded-full border border-emerald-500/40 hover:bg-emerald-950 text-emerald-300 text-xs font-semibold flex items-center justify-center gap-2 transition-colors"
-              >
-                <MessageCircle className="w-4 h-4" />
-                <span>WhatsApp for Similar Design</span>
-              </a>
-              <button
-                type="button"
-                onClick={() => {
-                  setActiveIndex(null);
-                  setQuoteModalOpen(true);
-                }}
-                className="w-full sm:w-auto bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-bold text-xs px-6 py-2.5 rounded-full flex items-center justify-center gap-2 transition-all"
-              >
-                <span>Request Free Quote</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
+                {/* In-House Fabrication & Warranty Assurance */}
+                <div className="bg-emerald-950/50 border border-emerald-800/50 p-3.5 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                  <div className="flex items-center gap-2.5">
+                    <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <span className="text-xs text-slate-300">
+                      Custom-built at our plant on Old National Highway, Uranhall, Anantnag.
+                    </span>
+                  </div>
+                  <span className="text-[11px] font-semibold text-emerald-400 bg-emerald-900/40 px-2.5 py-0.5 rounded-full border border-emerald-700/50 self-start sm:self-auto">
+                    20-Yr Product • 10-Yr Hardware Warranty
+                  </span>
+                </div>
+              </div>
+
+              {/* Footer CTAs */}
+              <div className="p-4 sm:px-6 border-t border-slate-800 bg-slate-950 flex flex-col sm:flex-row items-center justify-between gap-2.5 shrink-0">
+                <motion.a
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  href={`https://wa.me/918899919860?text=${encodeURIComponent(
+                    `Hi Windows King, I liked "${activeItem.title}" from your gallery and would like pricing and custom design details.`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto px-5 py-2.5 rounded-full border border-emerald-500/40 hover:bg-emerald-950 text-emerald-300 text-xs font-semibold flex items-center justify-center gap-2 transition-colors"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  <span>WhatsApp for Similar Design</span>
+                </motion.a>
+                <motion.button
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  type="button"
+                  onClick={() => {
+                    setActiveIndex(null);
+                    setQuoteModalOpen(true);
+                  }}
+                  className="w-full sm:w-auto bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-bold text-xs px-6 py-2.5 rounded-full flex items-center justify-center gap-2 transition-all cursor-pointer"
+                >
+                  <span>Request Free Quote</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </motion.button>
+              </div>
+            </motion.div>
           </div>
-        </div>
-      )}
+        )}
+      </AnimatePresence>
 
       {/* 4. Bottom Custom Quote Strip */}
-      <section className="w-full py-14 sm:py-16 bg-[#03150f] border-t border-emerald-950/80 text-center">
-        <div className="w-full px-4 sm:px-8 max-w-2xl mx-auto space-y-4">
+      <section className="w-full py-14 sm:py-16 bg-[#03150f] border-t border-emerald-950/80 text-center overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="w-full px-4 sm:px-8 max-w-2xl mx-auto space-y-4"
+        >
           <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
             Bring These Designs to Your Home
           </h2>
@@ -652,15 +686,17 @@ export default function GalleryPage() {
             for laser measurements, 3D designs, and technical consultations.
           </p>
           <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
-            <button
+            <motion.button
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.96 }}
               onClick={() => setQuoteModalOpen(true)}
-              className="w-full sm:w-auto bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-bold text-xs sm:text-sm px-7 py-3 rounded-full inline-flex items-center justify-center gap-2 shadow-lg transition-all"
+              className="w-full sm:w-auto bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-bold text-xs sm:text-sm px-7 py-3 rounded-full inline-flex items-center justify-center gap-2 shadow-lg transition-all cursor-pointer"
             >
               <span>Request a Free Quote</span>
               <ArrowRight className="w-4 h-4 text-slate-950" />
-            </button>
+            </motion.button>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       <Footer />

@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 import TopBar from '@/components/TopBar';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -89,36 +90,42 @@ export default function ProductsPage() {
 
               {/* Category Filter Pills */}
               <div className="flex flex-wrap items-center gap-2 pt-2">
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.96 }}
                   onClick={() => setActiveTab('all')}
-                  className={`px-5 py-2.5 rounded-full text-xs font-bold transition-all ${
+                  className={`px-5 py-2.5 rounded-full text-xs font-bold transition-colors cursor-pointer ${
                     activeTab === 'all'
                       ? 'bg-[#062c21] text-white shadow-md'
                       : 'bg-white border border-slate-200 text-slate-700 hover:border-emerald-400'
                   }`}
                 >
                   All Products ({productsData.length})
-                </button>
-                <button
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.96 }}
                   onClick={() => setActiveTab('windows')}
-                  className={`px-5 py-2.5 rounded-full text-xs font-bold transition-all ${
+                  className={`px-5 py-2.5 rounded-full text-xs font-bold transition-colors cursor-pointer ${
                     activeTab === 'windows'
                       ? 'bg-[#062c21] text-white shadow-md'
                       : 'bg-white border border-slate-200 text-slate-700 hover:border-emerald-400'
                   }`}
                 >
                   Windows
-                </button>
-                <button
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.96 }}
                   onClick={() => setActiveTab('doors')}
-                  className={`px-5 py-2.5 rounded-full text-xs font-bold transition-all ${
+                  className={`px-5 py-2.5 rounded-full text-xs font-bold transition-colors cursor-pointer ${
                     activeTab === 'doors'
                       ? 'bg-[#062c21] text-white shadow-md'
                       : 'bg-white border border-slate-200 text-slate-700 hover:border-emerald-400'
                   }`}
                 >
                   Patio &amp; French Doors
-                </button>
+                </motion.button>
               </div>
 
               {/* Simple Benefit Strip */}
@@ -190,12 +197,16 @@ export default function ProductsPage() {
       </section>
 
       {/* 2. Product Showcase Cards */}
-      <section className="w-full py-14 sm:py-20">
+      <section className="w-full py-14 sm:py-20 overflow-hidden">
         <div className="w-full px-4 sm:px-8 lg:px-12 xl:px-16 space-y-8 sm:space-y-12">
           {filteredProducts.map((product, index) => (
-            <div
+            <motion.div
               key={product.id}
               id={product.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               className="group bg-white rounded-3xl border border-slate-200/90 shadow-sm hover:shadow-2xl transition-all duration-300 overflow-hidden scroll-mt-28"
             >
               <div className="grid grid-cols-1 lg:grid-cols-12">
@@ -259,17 +270,21 @@ export default function ProductsPage() {
 
                   {/* Action Strip */}
                   <div className="pt-4 flex flex-wrap items-center gap-3 border-t border-slate-100">
-                    <button
+                    <motion.button
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
                       onClick={() => {
                         setSelectedProductForQuote(product.name);
                         setQuoteModalOpen(true);
                       }}
-                      className="bg-[#062c21] hover:bg-[#0c4333] text-white text-xs sm:text-sm font-semibold px-6 py-3 rounded-full flex items-center gap-2 shadow-sm transition-all active:scale-95"
+                      className="bg-[#062c21] hover:bg-[#0c4333] text-white text-xs sm:text-sm font-semibold px-6 py-3 rounded-full flex items-center gap-2 shadow-sm transition-all cursor-pointer"
                     >
                       <span>Get a Free Quote</span>
                       <ArrowRight className="w-3.5 h-3.5 text-emerald-400" />
-                    </button>
-                    <a
+                    </motion.button>
+                    <motion.a
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
                       href={`https://wa.me/918899919860?text=${encodeURIComponent(
                         `Hi, I would like to know more about ${product.name} and get 3D designs.`
                       )}`}
@@ -279,11 +294,11 @@ export default function ProductsPage() {
                     >
                       <MessageCircle className="w-4 h-4 text-emerald-700" />
                       <span>WhatsApp for 3D Design</span>
-                    </a>
+                    </motion.a>
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </section>
