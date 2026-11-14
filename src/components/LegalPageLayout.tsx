@@ -69,10 +69,10 @@ export function ContactNote() {
       <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
         Questions about this policy? Contact us at{' '}
         <a
-          href="mailto:info@windowsking.in"
+          href="mailto:info@windows-king.com"
           className="font-semibold text-emerald-800 hover:text-emerald-950"
         >
-          info@windowsking.in
+          info@windows-king.com
         </a>{' '}
         or call{' '}
         <a

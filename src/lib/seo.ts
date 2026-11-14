@@ -4,7 +4,7 @@
  * robots.txt, manifest and JSON-LD schema reads from this file.
  */
 
-export const SITE_URL = 'https://www.windowsking.in';
+export const SITE_URL = 'https://www.windows-king.com';
 
 export const siteConfig = {
   name: 'Windows King',
@@ -22,6 +22,7 @@ export const siteConfig = {
     'uPVC windows Kashmir',
     'uPVC doors Anantnag',
     'uPVC windows Jammu',
+    'uPVC windows kulgam',
     'casement windows',
     'sliding windows',
     'bi-fold doors',
@@ -31,6 +32,7 @@ export const siteConfig = {
     'sound insulation windows',
     'window manufacturer Kashmir',
     'Windows King',
+    'windows and doors in Kashmir',
   ],
   locale: 'en_IN',
   ogImage: '/images/og-image.jpg',
@@ -38,7 +40,7 @@ export const siteConfig = {
   logoMark: '/images/logo-mark.png',
   phones: ['+91-6005714181', '+91-8899919860'],
   phonePrimary: '+916005714181',
-  email: 'info@windowsking.in',
+  email: 'info@windows-king.com',
   address: {
     streetAddress: 'Old National Highway, Uranhall',
     addressLocality: 'Anantnag',

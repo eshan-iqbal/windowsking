@@ -133,8 +133,8 @@ export default function Footer() {
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                <a href="mailto:info@windowsking.in" className="hover:text-emerald-400">
-                  info@windowsking.in
+                <a href="mailto:info@windows-king.com" className="hover:text-emerald-400">
+                  info@windows-king.com
                 </a>
               </div>
               <div className="flex items-center gap-2 text-slate-400">

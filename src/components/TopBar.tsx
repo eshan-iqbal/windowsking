@@ -32,11 +32,11 @@ export default function TopBar() {
           </div>
           <span className="hidden md:inline text-emerald-800">|</span>
           <a
-            href="mailto:info@windowsking.in"
+            href="mailto:info@windows-king.com"
             className="hidden md:flex items-center gap-1.5 text-slate-300 hover:text-emerald-300 transition-colors"
           >
             <Mail className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-            <span>info@windowsking.in</span>
+            <span>info@windows-king.com</span>
           </a>
         </div>
 
