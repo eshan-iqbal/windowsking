@@ -1,0 +1,264 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 15, 23, 42;
+  --background-rgb: 255, 255, 255;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: #ffffff;
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+  overflow-x: clip;
+}
+
+/* Hide scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Vertical Process Pipeline Animations */
+@keyframes verticalFlowBeam {
+  0% {
+    top: -20%;
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+.animate-vertical-flow {
+  animation: verticalFlowBeam 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes scanLineHoriz {
+  0%, 100% {
+    transform: translateY(-80px);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateY(80px);
+    opacity: 0.9;
+  }
+}
+
+.animate-scan-line {
+  animation: scanLineHoriz 3s ease-in-out infinite;
+}
+
+@keyframes pulseGlowWeld {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.5;
+    filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.6));
+  }
+  50% {
+    transform: scale(1.25);
+    opacity: 1;
+    filter: drop-shadow(0 0 16px rgba(239, 68, 68, 0.9));
+  }
+}
+
+.animate-weld-glow {
+  animation: pulseGlowWeld 2s ease-in-out infinite;
+}
+
+@keyframes laserGuideMove {
+  0%, 100% {
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dashoffset: 24;
+  }
+}
+
+.animate-laser-dash {
+  animation: laserGuideMove 2s linear infinite;
+}
+
+/* Horizontal process flow diagram (ProcessSection) */
+.flow-grid-bg {
+  background-image: radial-gradient(circle, rgba(4, 120, 87, 0.07) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+
+.flow-scroll::-webkit-scrollbar {
+  height: 5px;
+}
+.flow-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.flow-scroll::-webkit-scrollbar-thumb {
+  background: rgba(4, 120, 87, 0.25);
+  border-radius: 9999px;
+}
+.flow-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(4, 120, 87, 0.45);
+}
+
+/* 9.6s cycle = 6 stages x 1.6s; each element is staggered via inline animation-delay */
+@keyframes flowDotX {
+  0% {
+    left: 0%;
+    opacity: 0;
+  }
+  1.5% {
+    opacity: 1;
+  }
+  15% {
+    opacity: 1;
+  }
+  16.667% {
+    left: 100%;
+    opacity: 0;
+  }
+  100% {
+    left: 100%;
+    opacity: 0;
+  }
+}
+
+.flow-dot-x {
+  animation: flowDotX 9.6s linear infinite;
+}
+
+@keyframes flowDotActiveX {
+  0% {
+    left: 0%;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    left: 100%;
+    opacity: 0;
+  }
+}
+
+.flow-dot-active-x {
+  animation: flowDotActiveX 2s linear forwards;
+}
+
+@keyframes flowDotActiveY {
+  0% {
+    top: 0%;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+.flow-dot-active-y {
+  animation: flowDotActiveY 2s linear forwards;
+}
+
+@keyframes flowNodeCircle {
+  0%,
+  13% {
+    background-color: #047857;
+    border-color: #047857;
+    color: #ffffff;
+  }
+  16.667%,
+  100% {
+    background-color: #ffffff;
+    border-color: #e2e8f0;
+    color: #047857;
+  }
+}
+
+.flow-node-circle {
+  animation: flowNodeCircle 9.6s ease-in-out infinite;
+}
+
+@keyframes flowNodeRing {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  13%,
+  100% {
+    transform: scale(1.85);
+    opacity: 0;
+  }
+}
+
+.flow-node-ring {
+  animation: flowNodeRing 9.6s ease-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flow-dot-x,
+  .flow-dot-active-x,
+  .flow-dot-active-y,
+  .flow-node-circle,
+  .flow-node-ring,
+  .wa-float {
+    animation: none;
+  }
+}
+
+@keyframes waFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.wa-float {
+  animation: waFloat 3s ease-in-out infinite;
+}
